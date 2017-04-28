@@ -1,11 +1,14 @@
-FROM java:8
-
+FROM openjdk:8-jre-alpine
 MAINTAINER Andreas Radauer <andreas.radauer@porscheinformatik.at>
-LABEL Description="WAD Quizmaster" Vendor="Porsche Informatik" Version="6.0.0"
+LABEL vendor="Porsche Informatik" \
+      app="quizmaster"
 
-RUN groupadd -r quiz && useradd -r -g quiz quiz
-COPY target/quizmaster-0.0.1-SNAPSHOT.jar /home/quiz/app.war
-USER cc
-
+RUN adduser -D app
+COPY target/quizmaster.jar /home/app/app.jar
+ENV JAVA_OPTS=
 EXPOSE 8080
-CMD ["java", "-jar", "/home/quiz/app.war"]
+VOLUME /tmp
+
+USER app
+WORKDIR /home/app
+ENTRYPOINT exec java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar app.jar
