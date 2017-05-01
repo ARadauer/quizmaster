@@ -17,6 +17,7 @@ public class ResultTo
         this.name = name;
         this.points = points;
         this.time = time;
+        this.company = company;
     }
 
     public int getNum()

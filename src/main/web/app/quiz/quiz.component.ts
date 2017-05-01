@@ -22,19 +22,35 @@ export class QuizComponent implements OnInit {
         }, 1000);
     }
 
+    ngOnInit() {
+        this.onRestart();
+    }
+
     onRestart(){
         this.quizResult = <QuizResult>{
-            message: 'Login to start',
+            message: 'Enter your name to start:',
             started: false
         };
     }
 
-
-    ngOnInit() {
-
-        this.onRestart();
-
+    showWrong(){
+        return this.quizResult.message.indexOf('Wrong') == 0;
     }
+
+    showCorrect(){
+        return this.quizResult.message.indexOf('Correct') == 0;
+    }
+
+    getAlertStyle(){
+        if(this.showCorrect()){
+            return 'alert-success';
+        }else if(this.showWrong()){
+            return 'alert-danger';
+        }else{
+            return 'alert-info';
+        }
+    }
+
 
     handleLogin(quizResult:QuizResult) {
         console.log('handleLogin', quizResult);

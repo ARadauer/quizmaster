@@ -23,7 +23,7 @@
       "mobile": false,
       "styles": [
         "../../../node_modules/bootstrap/dist/css/bootstrap.css",
-        "font/typicons.css"
+        "css/bootstrap-theme-slate.css"
       ],
       "scripts": [
         "../../../node_modules/jquery/dist/jquery.js",

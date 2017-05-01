@@ -12,6 +12,7 @@ public class QuizResult
     private boolean finished;
     private boolean started;
 
+    private boolean lastAnserCorrect;
     private int currentQuestion;
     private int numberOfQuestions;
     private String question;
@@ -111,5 +112,13 @@ public class QuizResult
 
     public void setStarted(boolean started) {
         this.started = started;
+    }
+
+    public boolean isLastAnserCorrect() {
+        return lastAnserCorrect;
+    }
+
+    public void setLastAnserCorrect(boolean lastAnserCorrect) {
+        this.lastAnserCorrect = lastAnserCorrect;
     }
 }

@@ -23,6 +23,7 @@ export interface Answer {
 export interface ResultTo {
     num:number;
     name:string;
+    company:string;
     points:number;
     time:number;
 }

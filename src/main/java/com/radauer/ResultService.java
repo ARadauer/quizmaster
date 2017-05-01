@@ -18,14 +18,16 @@ public class ResultService {
 
     public List<ResultTo> getResults() {
 
-        Iterable<Result> resultList = resultRepository.findAll();
+        List<Result> resultList = resultRepository.findAll();
+
+        sort(resultList);
+
         List<ResultTo> toList = new ArrayList<>();
         int count = 0;
         for (Result result : resultList) {
             count++;
 
-            toList.add(new ResultTo(count, result.getName(), result.getCompany(), result.getPoints(), result.getTime()));
-        }
+            toList.add(new ResultTo(count, result.getName(), result.getCompany(), result.getPoints(), result.getTime()));}
 
         return toList;
     }
@@ -34,7 +36,7 @@ public class ResultService {
 
         resultRepository.save(result);
 
-        List<Result> resultList = (List<Result>) resultRepository.findAll();
+        List<Result> resultList = resultRepository.findAll();
         sort(resultList);
 
         return resultList.indexOf(result);
@@ -50,10 +52,8 @@ public class ResultService {
     }
 
     public boolean containsEmail(String email) {
-        Result result = new Result();
-        result.setEmail(email);
-        //TOOD
-        return false;
+        List<Result> byEmail = resultRepository.findByEmail(email.toLowerCase());
+        return byEmail.size() > 0;
     }
 
 }

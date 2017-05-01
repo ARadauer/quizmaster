@@ -1,24 +1,35 @@
 <div>
-    <h1>{{quizResult.message}}</h1>
+    <h3 class="alert" [ngClass]="getAlertStyle()">{{quizResult.message}}</h3>
 
     <div *ngIf="!quizResult.started">
         <app-quiz-login (afterLogin)="handleLogin($event)"></app-quiz-login>
     </div>
 
     <div *ngIf="quizResult.started">
+
         <div *ngIf="!quizResult.finished">
-            <h2>Question {{quizResult.currentQuestion+1}}/{{quizResult.numberOfQuestions}}: {{quizResult.question}}</h2>
-            <li *ngFor="let answer of quizResult.answers">
-                {{ answer.number }}
-                <button (click)="onGiveAnswer(answer)">{{ answer.answer }}</button>
-            </li>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h2 class="pull-right">{{quizResult.currentQuestion+1}}/{{quizResult.numberOfQuestions}}</h2>
+                    <h2>{{quizResult.question}}</h2>
+                </div>
+                <div class="panel-body">
+                    <button *ngFor="let answer of quizResult.answers" (click)="onGiveAnswer(answer)" type="button"
+                            class="btn btn-default btn-lg btn-block">{{ answer.answer }}
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-6"><h2>Points: {{quizResult.points}}</h2></div>
+            <div class="col-xs-6" style="text-align: right"><h2>Time: {{quizResult.timeInSeconds}}</h2></div>
         </div>
 
-        <h2>Points: {{quizResult.points}}</h2>
-        <h2>Time: {{quizResult.timeInSeconds}}</h2>
     </div>
     <div *ngIf="quizResult.finished">
-        <button (click)="onRestart()">Restart!</button>
+        <h2>Quiz has finished!</h2>
+        <button (click)="onRestart()" class="btn btn-lg btn-primary">Restart!</button>
         <app-quiz-result></app-quiz-result>
     </div>
 </div>

@@ -63,7 +63,7 @@ public class QuizController {
 
         httpSession.setAttribute("quizSession", qs);
 
-        return createResult(qs, "Here we go!");
+        return createResult(qs, "Start!");
     }
 
     @RequestMapping("/result")
@@ -105,7 +105,7 @@ public class QuizController {
     }
 
     private void finish(QuizResult result, QuizSession session) {
-        result.setMessage(result.getMessage() + " Quiz has finished!");
+        result.setMessage(result.getMessage());
         result.setFinished(true);
 
         resultService.addResult(

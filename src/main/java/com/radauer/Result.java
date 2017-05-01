@@ -23,7 +23,7 @@ public class Result {
     public Result(String name, String email, String company, int points, int time) {
         this.name = name;
         this.company = company;
-        this.email = email;
+        this.email = email.toLowerCase();
         this.points = points;
         this.time = time;
     }
