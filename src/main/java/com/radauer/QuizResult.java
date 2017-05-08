@@ -6,13 +6,13 @@ package com.radauer;
 public class QuizResult
 {
 
-    private String user;
 
     private String message;
     private boolean finished;
     private boolean started;
+    private boolean submitted;
 
-    private boolean lastAnserCorrect;
+    private boolean lastAnswerCorrect;
     private int currentQuestion;
     private int numberOfQuestions;
     private String question;
@@ -68,15 +68,6 @@ public class QuizResult
         this.points = points;
     }
 
-    public String getUser()
-    {
-        return user;
-    }
-
-    public void setUser(String user)
-    {
-        this.user = user;
-    }
 
     public String getMessage()
     {
@@ -114,11 +105,19 @@ public class QuizResult
         this.started = started;
     }
 
-    public boolean isLastAnserCorrect() {
-        return lastAnserCorrect;
+    public boolean isSubmitted() {
+        return submitted;
     }
 
-    public void setLastAnserCorrect(boolean lastAnserCorrect) {
-        this.lastAnserCorrect = lastAnserCorrect;
+    public void setSubmitted(boolean submitted) {
+        this.submitted = submitted;
+    }
+
+    public boolean isLastAnswerCorrect() {
+        return lastAnswerCorrect;
+    }
+
+    public void setLastAnswerCorrect(boolean lastAnswerCorrect) {
+        this.lastAnswerCorrect = lastAnswerCorrect;
     }
 }

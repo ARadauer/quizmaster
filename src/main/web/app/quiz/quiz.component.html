@@ -2,7 +2,9 @@
     <h3 class="alert" [ngClass]="getAlertStyle()">{{quizResult.message}}</h3>
 
     <div *ngIf="!quizResult.started">
-        <app-quiz-login (afterLogin)="handleLogin($event)"></app-quiz-login>
+        <form (ngSubmit)="onStart()">
+            <button type="submit" class="btn btn-lg btn-block btn-primary">Start!</button>
+        </form>
     </div>
 
     <div *ngIf="quizResult.started">
@@ -11,25 +13,29 @@
 
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h2 class="pull-right">{{quizResult.currentQuestion+1}}/{{quizResult.numberOfQuestions}}</h2>
-                    <h2>{{quizResult.question}}</h2>
+                    <h3 class="pull-right">{{quizResult.currentQuestion+1}}/{{quizResult.numberOfQuestions}}</h3>
+                    <h4>{{quizResult.question}}</h4>
                 </div>
                 <div class="panel-body">
                     <button *ngFor="let answer of quizResult.answers" (click)="onGiveAnswer(answer)" type="button"
-                            class="btn btn-default btn-lg btn-block">{{ answer.answer }}
+                            class="btn btn-default btn-block">{{ answer.answer }}
                     </button>
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-xs-6"><h2>Points: {{quizResult.points}}</h2></div>
-            <div class="col-xs-6" style="text-align: right"><h2>Time: {{quizResult.timeInSeconds}}</h2></div>
+        <div *ngIf="quizResult.finished && !quizResult.submitted">
+            <h3>Quiz has finished!</h3>
+            <app-quiz-login (afterLogin)="handleSubmit($event)"></app-quiz-login>
         </div>
-
+        <div class="row">
+            <div class="col-xs-6"><h3>Points: {{quizResult.points}}</h3></div>
+            <div class="col-xs-6" style="text-align: right"><h3>Time: {{quizResult.timeInSeconds}}</h3></div>
+        </div>
     </div>
-    <div *ngIf="quizResult.finished">
-        <h2>Quiz has finished!</h2>
-        <button (click)="onRestart()" class="btn btn-lg btn-primary">Restart!</button>
+
+
+    <div *ngIf="quizResult.finished && quizResult.submitted">
+        <button (click)="onRestart()" class="btn btn-primary">Restart!</button>
         <app-quiz-result></app-quiz-result>
     </div>
 </div>

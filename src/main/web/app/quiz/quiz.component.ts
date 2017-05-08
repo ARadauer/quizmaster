@@ -28,10 +28,21 @@ export class QuizComponent implements OnInit {
 
     onRestart(){
         this.quizResult = <QuizResult>{
-            message: 'Enter your name to start:',
+            message: 'Start our quiz to win some awesome prizes:',
             started: false
         };
     }
+
+    onStart(){
+        this.quizService.start().subscribe(
+            quizResult => {
+                this.quizResult = quizResult;
+                console.log('quizresult', this.quizResult);
+            },
+            error => this.onLoadErrorMsg = <any>error);
+    }
+
+
 
     showWrong(){
         return this.quizResult.message.indexOf('Wrong') == 0;
@@ -52,7 +63,7 @@ export class QuizComponent implements OnInit {
     }
 
 
-    handleLogin(quizResult:QuizResult) {
+    handleSubmit(quizResult:QuizResult) {
         console.log('handleLogin', quizResult);
         this.quizResult = quizResult;
     }

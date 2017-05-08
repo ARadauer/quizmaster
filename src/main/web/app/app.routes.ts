@@ -1,6 +1,7 @@
 import {Routes} from "@angular/router";
 import {QuizComponent} from "./quiz/quiz.component";
 import {QuizResultComponent} from "./quiz-result/quiz-result.component";
+import {ImprintComponent} from "./imprint/imprint.component";
 
 export const AppRoutes: Routes = [
   {
@@ -21,5 +22,10 @@ export const AppRoutes: Routes = [
     path: 'page/results',
     pathMatch: 'full',
     component: QuizResultComponent
+  },
+  {
+    path: 'page/imprint',
+    pathMatch: 'full',
+    component: ImprintComponent
   }
 ];

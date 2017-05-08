@@ -17,13 +17,17 @@ export class QuizLoginComponent implements OnInit {
   email : string;
   company: string;
 
+  showTerms: boolean = false;
+
   ngOnInit() {
   }
 
+  public toggleTerms(){
+    this.showTerms = !this.showTerms;
+  }
+
   onSubmit(){
-    console.log('onSubmit');
-    console.log('user', this.user);
-    this.quizService.start(this.user, this.email, this.company).subscribe(quizResult => {
+    this.quizService.submit(this.user, this.email, this.company).subscribe(quizResult => {
       this.afterLogin.emit(quizResult);
     });
   }

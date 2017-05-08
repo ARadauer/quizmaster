@@ -1,13 +1,39 @@
 <form (ngSubmit)="onSubmit()">
-  <div class="form-group">
-    <input type="text" class="form-control input-lg" name="user" id="user" placeholder="Your name" [(ngModel)]="user" required>
-  </div>
-  <div class="form-group">
-    <input type="text" class="form-control input-lg" name="email" id="email" placeholder="Your email"  [(ngModel)]="email" required>
-  </div>
-  <div class="form-group">
-    <input type="text" class="form-control input-lg" name="company" id="company" placeholder="Your company" [(ngModel)]="company" required>
-  </div>
-  <button type="submit" class="btn btn-lg btn-primary">Start!</button>
+    <div class="form-group">
+        <input type="text" class="form-control" name="user" id="user" placeholder="Your name" [(ngModel)]="user"
+               required>
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" name="email" id="email" placeholder="Your email" [(ngModel)]="email"
+               required>
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" name="company" id="company" placeholder="Your company"
+               [(ngModel)]="company" required>
+    </div>
+
+    <div class="checkbox">
+        <label>
+            <input type="checkbox" required> I agree with the&nbsp;
+        </label><a (click)="toggleTerms()">terms and conditions</a>
+    </div>
+
+    <div class="well" *ngIf="showTerms">Teilnahmebedingungen Gewinnspiel: Teilnahmeschluss: 12. Mai 2017. Der
+        Rechtsweg und die
+        Barablöse sind ausgeschlossen. Teilnahmeberechtigt sind ausschließlich Personen, die zu Beginn des Gewinnspiels,
+        mit Stichtag 11. Mai 2017, das 18. Lebensjahr bereits vollendet haben und die Quizfragen richtig & vollständig
+        beantwortet haben. Der Gewinner wird von Porsche Informatik G.m.b.H. per E-Mail verständigt. Der Teilnehmer
+        erklärt sich im Falle eines Gewinns mit der Veröffentlichung seines Namens und Bildes einverstanden. Mitarbeiter
+        der österreichischen Volkswagen Organisation sowie der Porsche Holding Salzburg sind von der Teilnahme
+        ausgeschlossen. Der Teilnehmer erklärt sich einverstanden, dass die angegeben Daten zum Zwecke der
+        Mitarbeitersuche verarbeitet werden. Der Teilnehmer erklärt sich einverstanden, dass er über offenen Stellen
+        telefonisch, postalisch, oder mittelt elektronischer Post informiert wird. Diese Einwilligung kann jederzeit
+        unter wad@porscheinformatik.at widerrufen werden. Gewinnspielveranstalter: Porsche Informatik G.m.b.H.,
+        Louise-Piëch-Straße 9, 5020 Salzburg.
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit your result!</button>
+
+
 </form>
 

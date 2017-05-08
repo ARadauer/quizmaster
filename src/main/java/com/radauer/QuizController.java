@@ -47,17 +47,10 @@ public class QuizController {
     }
 
     @RequestMapping("/start")
-    public QuizResult start(@RequestParam(value = "name") String name, @RequestParam(value = "email") String email,
-                            @RequestParam(value = "company") String company) {
+    public QuizResult start() {
 
-        if (resultService.containsEmail(email)) {
-            return createMessageResult("You have already played", false);
-        }
 
         QuizSession qs = new QuizSession();
-        qs.setEmail(email);
-        qs.setUser(name);
-        qs.setCompany(company);
         qs.setQuizStart(System.currentTimeMillis());
         qs.setPoints(0);
 
@@ -65,6 +58,44 @@ public class QuizController {
 
         return createResult(qs, "Start!");
     }
+
+
+    @RequestMapping("/submit")
+    public QuizResult start(@RequestParam(value = "name") String name, @RequestParam(value = "email") String email,
+                            @RequestParam(value = "company") String company) {
+
+        if (resultService.containsEmail(email)) {
+            QuizResult result = new QuizResult();
+            result.setMessage("You have already participated!");
+            result.setStarted(true);
+            result.setFinished(true);
+            return result;
+        }
+
+
+        QuizSession qs = getQuizSession();
+        if (qs == null) {
+            return createMessageResult("Start the Quiz", false);
+        }
+        if(!qs.isFinished()){
+            return createMessageResult("You have not finished the Quiz", true);
+        }
+
+        httpSession.setAttribute("quizSession", qs);
+
+        resultService.addResult(
+                new Result(name, email,  company, qs.getPoints(), qs.getTimeInSeconds()));
+
+        httpSession.invalidate();
+        QuizResult result = new QuizResult();
+        result.setMessage("Thank you for participating!");
+        result.setFinished(true);
+        result.setStarted(true);
+        result.setSubmitted(true);
+        return result;
+    }
+
+
 
     @RequestMapping("/result")
     public List<ResultTo> result() {
@@ -88,14 +119,16 @@ public class QuizController {
         result.setFinished(false);
         result.setStarted(true);
 
-        result.setUser(session.getUser());
 
         result.setPoints(session.getPoints());
         result.setTimeInSeconds((int) ((System.currentTimeMillis() - session.getQuizStart()) / 1000));
         result.setCurrentQuestion(session.getCurrentQuestion());
         result.setNumberOfQuestions(questions.size());
         if (session.getCurrentQuestion() >= questions.size()) {
-            finish(result, session);
+            result.setMessage(result.getMessage());
+            result.setFinished(true);
+            session.setFinished(true);
+            session.setTimeInSeconds(result.getTimeInSeconds());
 
         } else {
             fillQuestion(result, session);
@@ -104,15 +137,7 @@ public class QuizController {
         return result;
     }
 
-    private void finish(QuizResult result, QuizSession session) {
-        result.setMessage(result.getMessage());
-        result.setFinished(true);
 
-        resultService.addResult(
-                new Result(result.getUser(), session.getEmail(), session.getCompany(), result.getPoints(), result.getTimeInSeconds()));
-
-        httpSession.invalidate();
-    }
 
     private void fillQuestion(QuizResult result, QuizSession session) {
 

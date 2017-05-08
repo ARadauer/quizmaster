@@ -11,8 +11,15 @@ export class QuizService {
     constructor(private http:Http) {
     }
 
-    public start(name:string, email:string, company:string):Observable<QuizResult> {
+    public start():Observable<QuizResult> {
         let url = `start`;
+
+        return this.http.get(url, {headers: this.headers})
+            .map((res:Response) => res.json() as QuizResult);
+    }
+
+    public submit(name:string, email:string, company:string):Observable<QuizResult> {
+        let url = `submit`;
 
         let params = new URLSearchParams();
         params.set('name', name);

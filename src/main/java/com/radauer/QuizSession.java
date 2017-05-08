@@ -8,32 +8,15 @@ import java.io.Serializable;
 public class QuizSession implements Serializable
 {
 
-    private String user;
-    private String email;
-    private String company;
+
     private long quizStart;
+    private int timeInSeconds;
     private int currentQuestion;
     private int points;
 
-    public String getUser()
-    {
-        return user;
-    }
+    private boolean finished;
 
-    public void setUser(String user)
-    {
-        this.user = user;
-    }
 
-    public String getEmail()
-    {
-        return email;
-    }
-
-    public void setEmail(String email)
-    {
-        this.email = email;
-    }
 
     public long getQuizStart()
     {
@@ -65,25 +48,27 @@ public class QuizSession implements Serializable
         this.points = points;
     }
 
-    public String getCompany() {
-        return company;
+    public int getTimeInSeconds() {
+        return timeInSeconds;
     }
 
-    public void setCompany(String company) {
-        this.company = company;
+    public void setTimeInSeconds(int timeInSeconds) {
+        this.timeInSeconds = timeInSeconds;
+    }
+
+    public boolean isFinished() {
+        return finished;
+    }
+
+    public void setFinished(boolean finished) {
+        this.finished = finished;
     }
 
     @Override
     public String toString()
     {
         return "QuizSession{"
-            + "user='"
-            + user
-            + '\''
-            + ", email='"
-            + email
-            + '\''
-            + ", quizStart="
+                   + ", quizStart="
             + quizStart
             + ", currentQuestion="
             + currentQuestion
