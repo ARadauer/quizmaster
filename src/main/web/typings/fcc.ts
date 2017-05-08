@@ -6,6 +6,7 @@ export interface QuizResult {
     user:string;
     finished:boolean;
     started:boolean;
+    submitted:boolean;
 
     currentQuestion:number;
     numberOfQuestions:number
