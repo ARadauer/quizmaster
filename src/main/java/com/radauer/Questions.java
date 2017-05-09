@@ -21,7 +21,7 @@ public class Questions
         questions.add(q1);
 
         Question q2 = new Question();
-        q2.setQuestion("How many filter criteria do you see on the first page of https://www.dasweltauto.at?");
+        q2.setQuestion("How many filter criteria do you see on the first page of www.dasweltauto.at?");
         q2.setAnswers(new String[]{"50", "3", "10"});
         q2.setCorrectAnswer(2);
         questions.add(q2);
