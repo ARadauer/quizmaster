@@ -6,13 +6,15 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
-import org.springframework.web.client.RestTemplate;
 
 /**
- * Created by Andreas on 17.04.2017.
+ * WAD Quiz main Controller
+ *
+ * TODO: refactor
  */
 @RestController
 public class QuizController {
@@ -71,7 +73,7 @@ public class QuizController {
                             @RequestParam(value = "company") String company, @RequestParam(value = "token") String token) {
 
 
-        if(!testCaptcha(token)){
+        if (!testCaptcha(token)) {
             QuizResult result = new QuizResult();
             result.setMessage("Captcha not valid!");
             result.setStarted(true);
@@ -91,14 +93,15 @@ public class QuizController {
         if (qs == null) {
             return createMessageResult("Start the Quiz", false);
         }
-        if(!qs.isFinished()){
+        if (!qs.isFinished()) {
             return createMessageResult("You have not finished the Quiz", true);
         }
 
         httpSession.setAttribute("quizSession", qs);
 
-        resultService.addResult(
-                new Result(name, email,  company, qs.getPoints(), qs.getTimeInSeconds()));
+        Result resultToSave = new Result(name, email, company, qs.getPoints(), qs.getTimeInMs());
+        resultService.addResult(resultToSave);
+        sendMessage(resultToSave);
 
         httpSession.invalidate();
         QuizResult result = new QuizResult();
@@ -106,22 +109,42 @@ public class QuizController {
         result.setFinished(true);
         result.setStarted(true);
         result.setSubmitted(true);
+
+
         return result;
     }
 
-    private boolean testCaptcha(String token){
-        MultiValueMap<String,String> params = new LinkedMultiValueMap<>();
+    private boolean testCaptcha(String token) {
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("secret", "6LfdoCAUAAAAAEwRULJx_y4jfU2q65oHGNQ0hP-f");
         params.add("response", token);
 
-        System.out.println("Test Token: "+token);
+        System.out.println("Test Token: " + token);
         RecaptchaResponse recaptchaResponse = restTemplate.postForObject("https://www.google.com/recaptcha/api/siteverify", params, RecaptchaResponse.class);
 
-        System.out.println("Response: "+recaptchaResponse);
-        if(recaptchaResponse.success){
+        System.out.println("Response: " + recaptchaResponse);
+        if (recaptchaResponse.success) {
             return true;
         }
         return false;
+    }
+
+    private void sendMessage(Result result) {
+        try {
+            StringBuffer message = new StringBuffer();
+            message.append("Name: " + result.getName() + "\n");
+            message.append("Email: " + result.getEmail() + "\n");
+            message.append("Company: " + result.getCompany() + "\n");
+            message.append("Punkte: " + result.getPoints() + "\n");
+            message.append("Zeit: " + result.getTime() + " ms\n");
+
+            MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+            params.add("text", message.toString());
+            restTemplate.postForObject("http://www.radauer.com/send.php", params, String.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
 
@@ -156,7 +179,7 @@ public class QuizController {
             result.setMessage(result.getMessage());
             result.setFinished(true);
             session.setFinished(true);
-            session.setTimeInSeconds(result.getTimeInSeconds());
+            session.setTimeInMs((int) (System.currentTimeMillis() - session.getQuizStart()));
 
         } else {
             fillQuestion(result, session);
@@ -164,7 +187,6 @@ public class QuizController {
 
         return result;
     }
-
 
 
     private void fillQuestion(QuizResult result, QuizSession session) {

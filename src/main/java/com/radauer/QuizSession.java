@@ -10,7 +10,7 @@ public class QuizSession implements Serializable
 
 
     private long quizStart;
-    private int timeInSeconds;
+    private int timeInMs;
     private int currentQuestion;
     private int points;
 
@@ -48,12 +48,12 @@ public class QuizSession implements Serializable
         this.points = points;
     }
 
-    public int getTimeInSeconds() {
-        return timeInSeconds;
+    public int getTimeInMs() {
+        return timeInMs;
     }
 
-    public void setTimeInSeconds(int timeInSeconds) {
-        this.timeInSeconds = timeInSeconds;
+    public void setTimeInMs(int timeInMs) {
+        this.timeInMs = timeInMs;
     }
 
     public boolean isFinished() {

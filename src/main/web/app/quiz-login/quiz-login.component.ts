@@ -34,6 +34,7 @@ export class QuizLoginComponent implements OnInit {
     console.log('token', token);
 
     this.quizService.submit(this.user, this.email, this.company, token).subscribe(quizResult => {
+      this.captcha.reset();
       this.afterLogin.emit(quizResult);
     });
   }
