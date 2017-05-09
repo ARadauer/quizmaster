@@ -11,6 +11,7 @@ import { QuizLoginComponent } from './quiz-login/quiz-login.component';
 import { QuizResultComponent } from './quiz-result/quiz-result.component';
 import { ImprintComponent } from './imprint/imprint.component';
 import { CountdownComponent } from './countdown/countdown.component';
+import { ReCaptchaModule } from 'angular2-recaptcha';
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import { CountdownComponent } from './countdown/countdown.component';
         BrowserModule,
         FormsModule,
         HttpModule,
-        RouterModule.forRoot(AppRoutes)
+        RouterModule.forRoot(AppRoutes),
+        ReCaptchaModule
     ],
     providers: [
         QuizService

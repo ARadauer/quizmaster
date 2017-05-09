@@ -26,13 +26,14 @@ export class QuizService {
             .map((res:Response) => res.json() as QuizResult);
     }
 
-    public submit(name:string, email:string, company:string):Observable<QuizResult> {
+    public submit(name:string, email:string, company:string, token: string):Observable<QuizResult> {
         let url = `submit`;
 
         let params = new URLSearchParams();
         params.set('name', name);
         params.set('email', email);
         params.set('company', company);
+        params.set('token', token);
         return this.http.get(url, {search: params, headers: this.headers})
             .map((res:Response) => res.json() as QuizResult);
     }

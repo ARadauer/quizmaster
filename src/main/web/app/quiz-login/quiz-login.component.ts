@@ -1,6 +1,8 @@
 import {Component, OnInit, Output, EventEmitter} from '@angular/core';
 import {QuizService} from "../quiz/quiz.service";
 import {QuizResult} from "../../typings/fcc";
+import { ViewChild } from '@angular/core';
+import { ReCaptchaComponent } from 'angular2-recaptcha';
 
 @Component({
   selector: 'app-quiz-login',
@@ -12,6 +14,7 @@ export class QuizLoginComponent implements OnInit {
   constructor(private quizService: QuizService) { }
 
   @Output() afterLogin = new EventEmitter<QuizResult>();
+  @ViewChild(ReCaptchaComponent) captcha: ReCaptchaComponent;
 
   user: string;
   email : string;
@@ -26,8 +29,11 @@ export class QuizLoginComponent implements OnInit {
     this.showTerms = !this.showTerms;
   }
 
-  onSubmit(){
-    this.quizService.submit(this.user, this.email, this.company).subscribe(quizResult => {
+  onSubmit() {
+    let token: string = this.captcha.getResponse().toString();
+    console.log('token', token);
+
+    this.quizService.submit(this.user, this.email, this.company, token).subscribe(quizResult => {
       this.afterLogin.emit(quizResult);
     });
   }

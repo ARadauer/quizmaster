@@ -1,12 +1,15 @@
 package com.radauer;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import org.springframework.web.client.RestTemplate;
 
 /**
  * Created by Andreas on 17.04.2017.
@@ -19,6 +22,9 @@ public class QuizController {
 
     @Autowired
     private ResultService resultService;
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     private Questions questions = new Questions();
 
@@ -62,8 +68,16 @@ public class QuizController {
 
     @RequestMapping("/submit")
     public QuizResult start(@RequestParam(value = "name") String name, @RequestParam(value = "email") String email,
-                            @RequestParam(value = "company") String company) {
+                            @RequestParam(value = "company") String company, @RequestParam(value = "token") String token) {
 
+
+        if(!testCaptcha(token)){
+            QuizResult result = new QuizResult();
+            result.setMessage("Captcha not valid!");
+            result.setStarted(true);
+            result.setFinished(true);
+            return result;
+        }
         if (resultService.containsEmail(email)) {
             QuizResult result = new QuizResult();
             result.setMessage("You have already participated!");
@@ -95,6 +109,20 @@ public class QuizController {
         return result;
     }
 
+    private boolean testCaptcha(String token){
+        MultiValueMap<String,String> params = new LinkedMultiValueMap<>();
+        params.add("secret", "6LfdoCAUAAAAAEwRULJx_y4jfU2q65oHGNQ0hP-f");
+        params.add("response", token);
+
+        System.out.println("Test Token: "+token);
+        RecaptchaResponse recaptchaResponse = restTemplate.postForObject("https://www.google.com/recaptcha/api/siteverify", params, RecaptchaResponse.class);
+
+        System.out.println("Response: "+recaptchaResponse);
+        if(recaptchaResponse.success){
+            return true;
+        }
+        return false;
+    }
 
 
     @RequestMapping("/result")
