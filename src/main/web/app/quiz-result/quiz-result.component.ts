@@ -20,7 +20,6 @@ export class QuizResultComponent implements OnInit {
         this.quizService.result().subscribe(
             results => {
                 this.results = results;
-                console.log('results', this.results);
             });
     }
 

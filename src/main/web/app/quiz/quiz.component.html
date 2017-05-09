@@ -1,4 +1,5 @@
-<div>
+<quiz-countdown></quiz-countdown>
+<div [hidden]="!showQuiz()">
     <h4 class="alert" [ngClass]="getAlertStyle()">{{quizResult.message}}</h4>
 
     <div *ngIf="!quizResult.started">

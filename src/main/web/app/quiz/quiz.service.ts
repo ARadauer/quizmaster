@@ -8,7 +8,15 @@ import {QuizResult, Answer, ResultTo} from "../../typings/fcc";
 export class QuizService {
     private headers = new Headers({'Content-Type': 'application/json'});
 
+    public activeDate = new Date(2017, 4, 11, 8);
+    //public activeDate = new Date(2017, 4, 9, 9, 43);
+
     constructor(private http:Http) {
+    }
+
+    public isQuizActive(){
+        let time = new Date().getTime() - this.activeDate.getTime();
+        return time > 0;
     }
 
     public start():Observable<QuizResult> {
@@ -25,9 +33,6 @@ export class QuizService {
         params.set('name', name);
         params.set('email', email);
         params.set('company', company);
-
-        console.log('params', params);
-
         return this.http.get(url, {search: params, headers: this.headers})
             .map((res:Response) => res.json() as QuizResult);
     }

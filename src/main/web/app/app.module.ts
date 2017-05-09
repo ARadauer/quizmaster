@@ -10,6 +10,7 @@ import {QuizService} from "./quiz/quiz.service";
 import { QuizLoginComponent } from './quiz-login/quiz-login.component';
 import { QuizResultComponent } from './quiz-result/quiz-result.component';
 import { ImprintComponent } from './imprint/imprint.component';
+import { CountdownComponent } from './countdown/countdown.component';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { ImprintComponent } from './imprint/imprint.component';
         QuizComponent,
         QuizLoginComponent,
         QuizResultComponent,
-        ImprintComponent
+        ImprintComponent,
+        CountdownComponent
     ],
     imports: [
         BrowserModule,

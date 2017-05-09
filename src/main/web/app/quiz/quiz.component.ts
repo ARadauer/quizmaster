@@ -1,7 +1,6 @@
 import {Component, OnInit} from "@angular/core";
 import {QuizService} from "./quiz.service";
 import {QuizResult, Answer} from "../../typings/fcc";
-import {Observable} from "rxjs/Observable";
 
 @Component({
     selector: 'app-quiz',
@@ -26,6 +25,10 @@ export class QuizComponent implements OnInit {
         this.onRestart();
     }
 
+    showQuiz(){
+        return this.quizService.isQuizActive();
+    }
+
     onRestart(){
         this.quizResult = <QuizResult>{
             message: 'Start our quiz to win some awesome prizes:',
@@ -37,7 +40,6 @@ export class QuizComponent implements OnInit {
         this.quizService.start().subscribe(
             quizResult => {
                 this.quizResult = quizResult;
-                console.log('quizresult', this.quizResult);
             },
             error => this.onLoadErrorMsg = <any>error);
     }
@@ -64,17 +66,14 @@ export class QuizComponent implements OnInit {
 
 
     handleSubmit(quizResult:QuizResult) {
-        console.log('handleLogin', quizResult);
         this.quizResult = quizResult;
     }
 
 
     onGiveAnswer(answer:Answer) {
-        console.log('answer', answer);
         this.quizService.answer(answer, this.quizResult.currentQuestion).subscribe(
             quizResult => {
                 this.quizResult = quizResult;
-                console.log('quizresult', this.quizResult);
             },
             error => this.onLoadErrorMsg = <any>error);
     }
