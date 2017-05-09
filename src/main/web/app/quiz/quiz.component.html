@@ -1,5 +1,5 @@
 <div>
-    <h3 class="alert" [ngClass]="getAlertStyle()">{{quizResult.message}}</h3>
+    <h4 class="alert" [ngClass]="getAlertStyle()">{{quizResult.message}}</h4>
 
     <div *ngIf="!quizResult.started">
         <form (ngSubmit)="onStart()">
@@ -27,7 +27,7 @@
             <h3>Quiz has finished!</h3>
             <app-quiz-login (afterLogin)="handleSubmit($event)"></app-quiz-login>
         </div>
-        <div class="row">
+        <div class="row" style="padding:15px;">
             <div class="col-xs-6"><h3>Points: {{quizResult.points}}</h3></div>
             <div class="col-xs-6" style="text-align: right"><h3>Time: {{quizResult.timeInSeconds}}</h3></div>
         </div>
